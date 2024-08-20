@@ -2,17 +2,17 @@ import MetaTrader5 as mt5
 import time
 import math
 
-# Account credentials
-login = 407593601
-server = 'Exness-MT5Real10'
-password = 'Jambform123$'
+# Account credentials, ADD YOURS
+login = 40444401
+server = 'EDEEFF'
+password = 'EFSESEF'
 
 # Initialize MetaTrader 5
 if not mt5.initialize(login=login, server=server, password=password):
     print("initialize() failed, error code =", mt5.last_error())
     quit()
 
-# Select EURUSD
+# Select EURUSD, change as you see fit
 symbol = "EURUSDz"
 timeframe = mt5.TIMEFRAME_M1
 
@@ -31,7 +31,7 @@ total = 1.09766
 def calculate_pip_distance(price1, price2):
     return abs(price1 - price2) * 100000
 
-# Calculate lot size
+# Calculate lot size. Change the risk and commission per standard lot as you see fit
 def calculate_lot_size(entry, stop_loss, risk=10, commission_per_lot=7):
     pips = calculate_pip_distance(entry, stop_loss)
     
@@ -110,38 +110,31 @@ request = {
     "type_filling": mt5.ORDER_FILLING_IOC,  # Adjust if necessary
 }
 
-# Place order
-if entry_to_total_pips >= 1.3 * entry_to_sl_pips:
-    # Place the order
-    result = mt5.order_send(request)
+# Place the order
+result = mt5.order_send(request)
     
-    # Print order result details
-    print("Order send result details:")
-    print(f"  retcode: {result.retcode}")
-    print(f"  deal: {result.deal}")
-    print(f"  order: {result.order}")
-    print(f"  volume: {result.volume}")
-    print(f"  price: {result.price}")
-    print(f"  bid: {result.bid}")
-    print(f"  ask: {result.ask}")
-    print(f"  comment: {result.comment}")
-    print(f"  request_id: {result.request_id}")
-    print(f"  retcode_external: {result.retcode_external}")
-    print(f"  request: {result.request}")
+# Print order result details
+print("Order send result details:")
+print(f"  retcode: {result.retcode}")
+print(f"  deal: {result.deal}")
+print(f"  order: {result.order}")
+print(f"  volume: {result.volume}")
+print(f"  price: {result.price}")
+print(f"  bid: {result.bid}")
+print(f"  ask: {result.ask}")
+print(f"  comment: {result.comment}")
+print(f"  request_id: {result.request_id}")
+print(f"  retcode_external: {result.retcode_external}")
+print(f"  request: {result.request}")
 
-    if result.retcode != mt5.TRADE_RETCODE_DONE:
-        print("Order failed, retcode =", result.retcode)
-    else:
-        print("Order placed successfully")
-        
-        # Calculate and print the commission
-        commission = lot_size * 7  # Assuming $7 commission per lot
-        print(f"Commission for this trade: ${commission:.2f}")
+if result.retcode != mt5.TRADE_RETCODE_DONE:
+    print("Order failed, retcode =", result.retcode)
 else:
-    print("Order not placed: Distance condition not met")
-    print(f"Distance from total to entry: {entry_to_total_pips:.1f} pips")
-    print(f"Distance from entry to stop loss: {entry_to_sl_pips:.1f} pips")
-    print(f"Required distance from total to entry: {1.3 * entry_to_sl_pips:.1f} pips")
+    print("Order placed successfully")
+        
+    # Calculate and print the commission
+    commission = lot_size * 7  # Assuming $7 commission per lot
+    print(f"Commission for this trade: ${commission:.2f}")
 
 
 # Shutdown MetaTrader 5
